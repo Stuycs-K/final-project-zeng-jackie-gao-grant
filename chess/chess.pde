@@ -2,17 +2,17 @@ int[][] board;
 
 void setup() {
   //load piece images
-  WPawn = loadImage("WhitePawn.png");
-  WKnight = loadImage("WhiteKnight.jpg");
-  WBishop = loadImage("WhiteBishop.png");
-  WRook = loadImage("WhiteRook.png");
-  WQueen = loadImage("WhiteQueen.png");
-  WKing = loadImage("WhiteKing.png");
+  WhitePawn = loadImage("WhitePawn.png");
+  WhiteKnight = loadImage("WhiteKnight.jpg");
+  WhiteBishop = loadImage("WhiteBishop.png");
+  WhiteRook = loadImage("WhiteRook.png");
+  WhiteQueen = loadImage("WhiteQueen.png");
+  WhiteKing = loadImage("WhiteKing.png");
 
-  BPawn = loadImage("BlackPawn.jpeg");
-  BKnight = loadImage("BlackNight.png");
-  BBishop = loadImage("BlackBishop.png");
-  BRook = loadImage("BlackRook.jpg");
-  BQueen = loadImage("BlackQueen.jpg");
-  BKing = loadImage("BlackKing.png");
+  BlackPawn = loadImage("BlackPawn.jpeg");
+  BlackKnight = loadImage("BlackNight.png");
+  BlackBishop = loadImage("BlackBishop.png");
+  BlackRook = loadImage("BlackRook.jpg");
+  BlackQueen = loadImage("BlackQueen.jpg");
+  BlackKing = loadImage("BlackKing.png");
 }
