@@ -1,20 +1,20 @@
 int[][] board;
-
+int squareSize=10;
 void setup() {
   //load piece images
-  WhitePawn = loadImage("WhitePawn.png");
-  WhiteKnight = loadImage("WhiteKnight.jpg");
-  WhiteBishop = loadImage("WhiteBishop.png");
-  WhiteRook = loadImage("WhiteRook.png");
-  WhiteQueen = loadImage("WhiteQueen.png");
-  WhiteKing = loadImage("WhiteKing.png");
+  PImage WhitePawn = loadImage("WhitePawn.png");
+  PImage WhiteKnight = loadImage("WhiteKnight.jpg");
+  PImage WhiteBishop = loadImage("WhiteBishop.png");
+  PImage WhiteRook = loadImage("WhiteRook.png");
+  PImage WhiteQueen = loadImage("WhiteQueen.png");
+  PImage WhiteKing = loadImage("WhiteKing.png");
 
-  BlackPawn = loadImage("BlackPawn.jpeg");
-  BlackKnight = loadImage("BlackNight.png");
-  BlackBishop = loadImage("BlackBishop.png");
-  BlackRook = loadImage("BlackRook.jpg");
-  BlackQueen = loadImage("BlackQueen.jpg");
-  BlackKing = loadImage("BlackKing.png");
+  PImage BlackPawn = loadImage("BlackPawn.jpeg");
+  PImage BlackKnight = loadImage("BlackNight.png");
+  PImage BlackBishop = loadImage("BlackBishop.png");
+  PImage BlackRook = loadImage("BlackRook.jpg");
+  PImage BlackQueen = loadImage("BlackQueen.jpg");
+  PImage BlackKing = loadImage("BlackKing.png");
   
   WhitePawn.resize(squareSize, squareSize);
   WhiteKnight.resize(squareSize, squareSize);
@@ -35,5 +35,6 @@ void setup() {
   setupBoard();
 
   displayBoard();
+  public setupBoard(){
+  }
 }
-test
