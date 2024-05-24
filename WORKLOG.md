@@ -18,7 +18,7 @@ Worked on setup with Jackie. We loaded the sprites for each piece, and wrote coo
 
 
 
-### date y
+### 5/24/24 
 
-5/24/24
+
 Worked on piece class constructors and methods. 
