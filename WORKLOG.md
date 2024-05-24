@@ -2,21 +2,23 @@
 
 ## GROUP MEMBER 1
 
-### date x
+### 5/23/24
 
-info
+Worked with Grant to load all the images of the pieces. Also worked on building the board. Wrote coordinate and move class.
 
-### date y
+### 5/24
 
-info
+Worked on the pawn class. Wrote methods for the color and also trying to write method to get all possible moves a pawn can go to
 
 
 ## GROUP MEMBER 2
 
-### date x
+### 5/23/24
+Worked on setup with Jackie. We loaded the sprites for each piece, and wrote coordinate and move class.
 
-info
 
-### date y
 
-info
+### 5/24/24 
+
+
+Worked on piece class constructors and methods. 
