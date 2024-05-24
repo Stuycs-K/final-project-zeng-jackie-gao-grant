@@ -13,10 +13,12 @@ info
 
 ## GROUP MEMBER 2
 
-### date x
+### 5/23/24
+Worked on setup with Jackie. We loaded the sprites for each piece, and wrote coordinate and move class.
 
-info
+
 
 ### date y
 
-info
+5/24/24
+Worked on piece class constructors and methods. 
