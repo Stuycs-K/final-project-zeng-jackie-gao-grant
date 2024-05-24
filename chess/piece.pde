@@ -10,4 +10,5 @@ abstract class piece {
   abstract PImage getImage();
 
   abstract ArrayList<move> getPossibleMoves(piece[][] board, int x, int y);
+  
 }
