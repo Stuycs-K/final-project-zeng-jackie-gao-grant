@@ -10,6 +10,9 @@ Worked with Grant to load all the images of the pieces. Also worked on building 
 
 Worked on the pawn class. Wrote methods for the color and also trying to write method to get all possible moves a pawn can go to
 
+### 5/28
+
+Worked on creating and started writing methods Rook, Knight, Queen classes
 
 ## GROUP MEMBER 2
 
