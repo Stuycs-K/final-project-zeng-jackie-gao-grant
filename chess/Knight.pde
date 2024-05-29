@@ -8,3 +8,5 @@ class Knight extends piece {
   }
 
   ArrayList<move> getPossibleMoves(Piece[][] board, int x, int y) {
+    
+  }
