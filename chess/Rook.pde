@@ -18,5 +18,13 @@ class Rook extends piece {
         break;
       }
     }
+    for (int i = x - 1; i >= 0; i--) {
+      if (board[i][y] == null) {
+        moves.add(new move(x, y, i, y));
+      } else {
+        if (board[i][y].pieceColor != pieceColor) moves.add(new move(x, y, i, y));
+        break;
+      }
+    }
     
   }
