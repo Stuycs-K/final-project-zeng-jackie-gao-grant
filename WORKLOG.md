@@ -14,6 +14,10 @@ Worked on the pawn class. Wrote methods for the color and also trying to write m
 
 Worked on creating and started writing methods Rook, Knight, Queen classes
 
+### 5/29
+
+Finished up allpossiblemove methods for Rook and Bishop
+
 ## GROUP MEMBER 2
 
 ### 5/23/24
