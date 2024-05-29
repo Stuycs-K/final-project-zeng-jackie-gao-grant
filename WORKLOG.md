@@ -31,8 +31,11 @@ Worked on piece class constructors and methods.
 ### 5/27/24 
 Worked on pawn move method.
 
-
 ### 5/28/24 
 Worked on creating and starting Bishop and King CLasses.
+
+
+### 5/29/24 
+Worked on King getPossibleMoves
 
 
