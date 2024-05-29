@@ -19,6 +19,23 @@ class King extends piece {
         }
       }
     }
+    if (!hasMoved) {
+      if (pieceColor == White) {
+        if (!WKRookMoved && board[5][7] == null && board[6][7] == null) {
+          moves.add(new move(x, y, 6, 7));
+        }
+        if (!WQRookMoved && board[1][7] == null && board[2][7] == null && board[3][7] == null) {
+          moves.add(new move(x, y, 2, 7));
+        }
+      } else {
+        if (!BKRookMoved && board[5][0] == null && board[6][0] == null) {
+          moves.add(new move(x, y, 6, 0));
+        }
+        if (!BQRookMoved && board[1][0] == null && board[2][0] == null && board[3][0] == null) {
+          moves.add(new move(x, y, 2, 0));
+        }
+      }
+    }
     return moves;
   }
   }
