@@ -33,5 +33,30 @@ class Bishop extends Piece {
         }
       }
     }
-    
+    for (int i = 1; i < 8; i++) {
+      int newX = x + i;
+      int newY = y - i;
+      if (newX < 8 && newY >= 0) {
+        if (board[newX][newY] == null) {
+          moves.add(new move(x, y, newX, newY));
+        } else {
+          if (board[newX][newY].pieceColor != pieceColor) moves.add(new move(x, y, newX, newY));
+          break;
+        }
+      }
+    }
+    for (int i = 1; i < 8; i++) {
+      int newX = x - i;
+      int newY = y + i;
+      if (newX >= 0 && newY < 8) {
+        if (board[newX][newY] == null) {
+          moves.add(new move(x, y, newX, newY));
+        } else {
+          if (board[newX][newY].pieceColor != pieceColor) moves.add(new move(x, y, newX, newY));
+          break;
+        }
+      }
+    }
+    return moves;
+  }
 }
