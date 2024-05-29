@@ -22,6 +22,13 @@ Worked on setup with Jackie. We loaded the sprites for each piece, and wrote coo
 
 
 ### 5/24/24 
-
-
 Worked on piece class constructors and methods. 
+
+### 5/27/24 
+Worked on pawn move method.
+
+
+### 5/28/24 
+Worked on creating and starting Bishop and King CLasses.
+
+
