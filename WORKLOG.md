@@ -38,4 +38,7 @@ Worked on creating and starting Bishop and King CLasses.
 ### 5/29/24 
 Worked on King getPossibleMoves
 
+### 5/30/24
+Worked on creating the board
+
 
