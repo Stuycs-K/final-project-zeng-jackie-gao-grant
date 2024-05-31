@@ -1,5 +1,3 @@
-int[][] board;
-
 int[] lightSquareColour = {238,238,210,255};
 int[] darkSquareColour = {117,150,86,255};
 int[] lastMoveColour1 = {50, 255, 50, 40};
@@ -8,20 +6,6 @@ int[] selectedSquareColour = {0, 150, 255, 50};
 int[] possibleMovesColour = {255, 0, 0, 60};
 
 int squareSize = 100;
-
-
-final int None = 0;
-final int Pawn = 1;
-final int Knight = 2;
-final int Bishop = 3;
-final int Rook = 4;
-final int Queen = 5;
-final int King = 6;
-
-final int White = 8;
-final int Black = 16;
-
-int turn = White;
 
 PImage WPawn;
 PImage WKnight;
@@ -37,22 +21,9 @@ PImage BRook;
 PImage BQueen;
 PImage BKing;
 
-
 coordinate selectedSquare = null;
 
-
-boolean WKingMoved = false;
-boolean BKingMoved = false;
-boolean WQRookMoved = false;
-boolean WKRookMoved = false;
-boolean BQRookMoved = false;
-boolean BKRookMoved = false;
-
-coordinate pMove1 = null;
-coordinate pMove2 = null;
-
-boolean promotion = false;
-coordinate promotionPosition = null;
+Board chessBoard;
 
 void setup() {
   WPawn = loadImage("WhitePawn.png");
@@ -84,52 +55,46 @@ void setup() {
   BKing.resize(squareSize, squareSize);
 
   size(1000, 800);
-  board = new int[8][8];
-  setupBoard();
-
+  chessBoard = new Board();
   displayBoard();
 }
 
-void changeTurn() {
-  turn = turn == White ? Black : White;
+void draw() {
+  if (millis() < 5000) displayBoard();
 }
 
-void draw() {
-  if(millis() < 5000)displayBoard();
-}
 void mousePressed() {
-  if (promotion) {
-    changeTurn();
+  if (chessBoard.promotion) {
+    chessBoard.changeTurn();
     int choice = floor(mouseX / (width / 4));
     if (choice == 0) {
-      board[promotionPosition.i][promotionPosition.j] = turn | Queen;
+      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Queen;
     }
     if (choice == 1) {
-      board[promotionPosition.i][promotionPosition.j] = turn | Rook;
+      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Rook;
     }
     if (choice == 2) {
-      board[promotionPosition.i][promotionPosition.j] = turn | Bishop;
+      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Bishop;
     }
     if (choice == 3) {
-      board[promotionPosition.i][promotionPosition.j] = turn | Knight;
+      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Knight;
     }
-    changeTurn();
-    promotion = false;
+    chessBoard.changeTurn();
+    chessBoard.promotion = false;
   } else {
-    coordinate klc = locateKing(board, White);
+    coordinate klc = chessBoard.locateKing(chessBoard.White);
     if (selectedSquare == null) {
       if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 800) {
         selectedSquare = new coordinate(floor(mouseX / squareSize), floor(mouseY / squareSize));
       }
     } else {
-      ArrayList<move> moves = movesFromSquare(board, selectedSquare, turn);
+      ArrayList<move> moves = movesFromSquare(chessBoard.board, selectedSquare, chessBoard.turn);
       for (move m : moves) {
         if (floor(mouseX / squareSize) == m.i2 && floor(mouseY / squareSize) == m.j2) {
-          //make the move
-          int[][] temp = makeUpdatingMove(board, m.i1, m.j1, m.i2, m.j2);
-          board = temp;
+          int[][] temp = chessBoard.makeUpdatingMove(chessBoard.board, m.i1, m.j1, m.i2, m.j2);
+          chessBoard.board = temp;
           selectedSquare = null;
-          changeTurn();
+          chessBoard.changeTurn();
           displayBoard();
           break;
         }
@@ -137,47 +102,97 @@ void mousePressed() {
       selectedSquare = null;
     }
   }
-  checkForGameOver(board, turn);
+  chessBoard.checkForGameOver();
   displayBoard();
 }
-String checkForGameOver(int[][] b, int t) {
-  HashMap<coordinate, coordinate> moves = generateLegalMoves(b, t);
-  if (moves.size() == 0) {
-    if (isCheck(b, t)) {
-      return "Checkmate";
-    } else {
-      return "Stalemate";
+
+ArrayList<move> movesFromSquare(int[][] b, coordinate sq, int whoseTurn) {
+  ArrayList<move> moves = new ArrayList<move>();
+  HashMap<coordinate, coordinate> plm = chessBoard.generateLegalMoves(whoseTurn);
+  for (coordinate c : plm.keySet()) {
+    coordinate v1 = c;
+    coordinate v2 = plm.get(c);
+    if (v1.i == sq.i && v1.j == sq.j)moves.add(new move(v1.i, v1.j, v2.i, v2.j));
+  }
+
+  return moves;
+}
+
+void displayBoard() {
+  background(70);
+  fill(lightSquareColour[0], lightSquareColour[1], lightSquareColour[2]);
+  noStroke();
+  rect(0, 0, 800, 800);
+  for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < 8; i++) {
+      if (i % 2 == 0) {
+        if (j % 2 != 0) {
+          fill(darkSquareColour[0], darkSquareColour[1], darkSquareColour[2]);
+          rect(i * squareSize, j * squareSize, squareSize, squareSize);
+        }
+      } else {
+        if (j % 2 == 0) {
+          fill(darkSquareColour[0], darkSquareColour[1], darkSquareColour[2]);
+          rect(i * squareSize, j * squareSize, squareSize, squareSize);
+        }
+      }
+      boolean highlighted = false;
+      if (chessBoard.pMove1 != null) {
+        if (chessBoard.pMove1.i == i && chessBoard.pMove1.j == j) {
+          fill(lastMoveColour1[0], lastMoveColour1[1], lastMoveColour1[2], lastMoveColour1[3]);
+          rect(chessBoard.pMove1.i * squareSize, chessBoard.pMove1.j * squareSize, squareSize, squareSize);
+          highlighted = true;
+        }
+        if (chessBoard.pMove2 != null) {
+          if (chessBoard.pMove2.i == i && chessBoard.pMove2.j == j) {
+            fill(lastMoveColour2[0], lastMoveColour2[1], lastMoveColour2[2], lastMoveColour2[3]);
+            rect(chessBoard.pMove2.i * squareSize, chessBoard.pMove2.j * squareSize, squareSize, squareSize);
+            highlighted = true;
+          }
+        }
+      }
+      if (!highlighted) {
+        if (i % 2 == 0) {
+          if (j % 2 != 0) {
+            fill(darkSquareColour[0], darkSquareColour[1], darkSquareColour[2]);
+            rect(i * squareSize, j * squareSize, squareSize, squareSize);
+          }
+        } else {
+          if (j % 2 == 0) {
+            fill(darkSquareColour[0], darkSquareColour[1], darkSquareColour[2]);
+            rect(i * squareSize, j * squareSize, squareSize, squareSize);
+          }
+        }
+      }
+      PImage pieceImg = null;
+      if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.Pawn)) {
+        pieceImg = WPawn;
+      } else if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.Knight)) {
+        pieceImg = WKnight;
+      } else if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.Bishop)) {
+        pieceImg = WBishop;
+      } else if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.Rook)) {
+        pieceImg = WRook;
+      } else if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.Queen)) {
+        pieceImg = WQueen;
+      } else if (chessBoard.board[i][j] == (chessBoard.White | chessBoard.King)) {
+        pieceImg = WKing;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.Pawn)) {
+        pieceImg = BPawn;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.Knight)) {
+        pieceImg = BKnight;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.Bishop)) {
+        pieceImg = BBishop;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.Rook)) {
+        pieceImg = BRook;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.Queen)) {
+        pieceImg = BQueen;
+      } else if (chessBoard.board[i][j] == (chessBoard.Black | chessBoard.King)) {
+        pieceImg = BKing;
+      }
+      if (pieceImg != null) {
+        imageMode(CENTER);
+        image(pieceImg, (i + 0.5) * squareSize, (j + 0.5) * squareSize, squareSize, squareSize);
+      }
     }
   }
-
-  return "";
-}
-int[][] makeUpdatingMove(int[][] b, int i1, int j1, int i2, int j2) {
-  int[][] temp = makeMove(b, i1, j1, i2, j2);
-  if (selectedPiece(selectedSquare) == (White | King)) {
-    WKingMoved = true;
-  }
-  if (selectedPiece(selectedSquare) == (Black | King)) {
-    BKingMoved = true;
-  }
-  if (selectedPiece(selectedSquare) == (White | Rook) && i1 == 0) {
-    WQRookMoved = true;
-  }
-  if (selectedPiece(selectedSquare) == (White | Rook) && i1 == 7) {
-    WKRookMoved = true;
-  }
-  if (selectedPiece(selectedSquare) == (Black | Rook) && i1 == 0) {
-    BQRookMoved = true;
-  }
-  if (selectedPiece(selectedSquare) == (Black | Rook) && i1 == 7) {
-    BKRookMoved = true;
-  }
-  pMove1 = new coordinate(i1, j1);
-  pMove2 = new coordinate(i2, j2);
-
-  if (j2 == (turn == White ? 0 : 7) && (selectedPiece(selectedSquare) == (White | Pawn) || selectedPiece(selectedSquare) == (Black | Pawn))) { //promotion
-    promotion = true;
-    promotionPosition = new coordinate(i2, j2);
-  }
-  return temp;
-}
