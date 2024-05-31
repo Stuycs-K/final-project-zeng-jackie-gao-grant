@@ -24,3 +24,15 @@ class Pawn extends Piece {
     if (pos.i < 7 && pos.j + direction >= 0 && pos.j + direction < 8 && board[pos.i + 1][pos.j + direction] != chessBoard.None && (board[pos.i + 1][pos.j + direction] & 24) != colour) {
       moves.add(new coordinate(pos.i + 1, pos.j + direction));
     }
+    if (pos.j == (colour == chessBoard.White ? 3 : 4)) {
+      if (pos.i > 0 && pos.j + direction >= 0 && pos.j + direction < 8 && board[pos.i - 1][pos.j] == (chessBoard.otherColour(colour) | chessBoard.Pawn) && chessBoard.pMove2.i == pos.i - 1 && chessBoard.pMove2.j == pos.j && Math.abs(chessBoard.pMove1.j - chessBoard.pMove2.j) == 2) {
+        moves.add(new coordinate(pos.i - 1, pos.j + direction));
+      }
+      if (pos.i < 7 && pos.j + direction >= 0 && pos.j + direction < 8 && board[pos.i + 1][pos.j] == (chessBoard.otherColour(colour) | chessBoard.Pawn) && chessBoard.pMove2.i == pos.i + 1 && chessBoard.pMove2.j == pos.j && Math.abs(chessBoard.pMove1.j - chessBoard.pMove2.j) == 2) {
+        moves.add(new coordinate(pos.i + 1, pos.j + direction));
+      }
+    }
+
+    return moves;
+  }
+}
