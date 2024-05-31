@@ -85,3 +85,6 @@ class Board {
   }
   return new coordinate(-1, -1);
 }
+coordinate locateKing(int kingColour) {
+  return locateKing(kingColour, board);
+}
