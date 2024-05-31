@@ -49,4 +49,7 @@ Worked on King getPossibleMoves
 ### 5/30/24
 Worked on creating the board, reworked rook knight and bishop classes.
 
+### 5/31/24
+Worked on Board move methods
+
 
