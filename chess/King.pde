@@ -1,41 +1,18 @@
-class King extends piece {
-  King(int pieceColor) {
-    super(pieceColor);
+class King extends Piece {
+  King(int colour) {
+    super(colour, chessBoard.King);
   }
 
-  PImage getImage() {
-    return (pieceColor == White) ? WhiteKing : BlackKing;
-  }
-
-  ArrayList<move> getPossibleMoves(Piece[][] board, int x, int y) {
-    ArrayList<move> moves = new ArrayList<move>();
-    int[][] deltas = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-    for (int[] delta : deltas) {
-      int newX = x + delta[0];
-      int newY = y + delta[1];
-      if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-        if (board[newX][newY] == null || board[newX][newY].pieceColor != pieceColor) {
-          moves.add(new move(x, y, newX, newY));
+  @Override
+  ArrayList<coordinate> generateMoves(int[][] board, coordinate pos) {
+    ArrayList<coordinate> moves = new ArrayList<>();
+    int[][] offsets = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    for (int[] offset : offsets) {
+      int newI = pos.i + offset[0];
+      int newJ = pos.j + offset[1];
+      if (newI >= 0 && newI < 8 && newJ >= 0 && newJ < 8) {
+        if (board[newI][newJ] == chessBoard.None || (board[newI][newJ] & 24) != colour) {
+          moves.add(new coordinate(newI, newJ));
         }
       }
     }
-    if (!hasMoved) {
-      if (pieceColor == White) {
-        if (!WKRookMoved && board[5][7] == null && board[6][7] == null) {
-          moves.add(new move(x, y, 6, 7));
-        }
-        if (!WQRookMoved && board[1][7] == null && board[2][7] == null && board[3][7] == null) {
-          moves.add(new move(x, y, 2, 7));
-        }
-      } else {
-        if (!BKRookMoved && board[5][0] == null && board[6][0] == null) {
-          moves.add(new move(x, y, 6, 0));
-        }
-        if (!BQRookMoved && board[1][0] == null && board[2][0] == null && board[3][0] == null) {
-          moves.add(new move(x, y, 2, 0));
-        }
-      }
-    }
-    return moves;
-  }
-  }
