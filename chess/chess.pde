@@ -1,5 +1,7 @@
-int[] lightSquareColour = {237, 174, 107};
-int[] darkSquareColour = {122, 73, 21};
+int[][] board;
+
+int[] lightSquareColour = {238,238,210,255};
+int[] darkSquareColour = {117,150,86,255};
 int[] lastMoveColour1 = {50, 255, 50, 40};
 int[] lastMoveColour2 = {50, 255, 50, 60};
 int[] selectedSquareColour = {0, 150, 255, 50};
@@ -21,45 +23,78 @@ final int Black = 16;
 
 int turn = White;
 
-boolean WKingMoved = false, BKingMoved = false, WQRookMoved = false, WKRookMoved = false;
-boolean BQRookMoved = false, BKRookMoved = false;
-coordinate pMove1 = null, pMove2 = null;
+PImage WPawn;
+PImage WKnight;
+PImage WBishop;
+PImage WRook;
+PImage WQueen;
+PImage WKing;
+
+PImage BPawn;
+PImage BKnight;
+PImage BBishop;
+PImage BRook;
+PImage BQueen;
+PImage BKing;
+
+
+coordinate selectedSquare = null;
+
+
+boolean WKingMoved = false;
+boolean BKingMoved = false;
+boolean WQRookMoved = false;
+boolean WKRookMoved = false;
+boolean BQRookMoved = false;
+boolean BKRookMoved = false;
+
+coordinate pMove1 = null;
+coordinate pMove2 = null;
+
 boolean promotion = false;
 coordinate promotionPosition = null;
 
-Board board;
-
 void setup() {
-    size(1000, 800);
-    board = new Board();
-    board.setup();
-    board.display();
+  //load piece images
+  WPawn = loadImage("WhitePawn.png");
+  WKnight = loadImage("WhiteKnight.png");
+  WBishop = loadImage("WhiteBishop.png");
+  WRook = loadImage("WhiteRook.png");
+  WQueen = loadImage("WhiteQueen.png");
+  WKing = loadImage("WhiteKing.png");
+
+  BPawn = loadImage("BlackPawn.png");
+  BKnight = loadImage("BlackKnight.png");
+  BBishop = loadImage("BlackBishop.png");
+  BRook = loadImage("BlackRook.png");
+  BQueen = loadImage("BlackQueen.png");
+  BKing = loadImage("BlackKing.png");
+
+  WPawn.resize(squareSize, squareSize);
+  WKnight.resize(squareSize, squareSize);
+  WBishop.resize(squareSize, squareSize);
+  WRook.resize(squareSize, squareSize);
+  WQueen.resize(squareSize, squareSize);
+  WKing.resize(squareSize, squareSize);
+
+  BPawn.resize(squareSize, squareSize);
+  BKnight.resize(squareSize, squareSize);
+  BBishop.resize(squareSize, squareSize);
+  BRook.resize(squareSize, squareSize);
+  BQueen.resize(squareSize, squareSize);
+  BKing.resize(squareSize, squareSize);
+
+  size(1000, 800);
+  board = new int[8][8];
+  setupBoard();
+
+  displayBoard();
+}
+
+void changeTurn() {
+  turn = turn == White ? Black : White;
 }
 
 void draw() {
-    if (millis() < 5000) board.display();
-}
-
-void mousePressed() {
-    if (promotion) {
-        handlePromotion();
-    } else {
-        board.handleMousePressed(mouseX, mouseY);
-    }
-    board.checkForGameOver();
-    board.display();
-}
-
-void handlePromotion() {
-    int choice = floor(mouseX / (width / 4));
-    if (choice == 0) {
-        board.promotePiece(turn | Queen);
-    } else if (choice == 1) {
-        board.promotePiece(turn | Rook);
-    } else if (choice == 2) {
-        board.promotePiece(turn | Bishop);
-    } else if (choice == 3) {
-        board.promotePiece(turn | Knight);
-    }
-    promotion = false;
+  if(millis() < 5000)displayBoard();
 }
