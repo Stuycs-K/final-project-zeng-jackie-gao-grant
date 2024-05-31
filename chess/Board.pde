@@ -104,3 +104,13 @@ boolean isCheck(int kingColour) {
 HashMap<coordinate, coordinate> generateLegalMoves(int colour) {
   HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(colour);
   HashMap<coordinate, coordinate> legalMoves = new HashMap<>();
+  
+  for (coordinate from : pseudoLegalMoves.keySet()) {
+    coordinate to = pseudoLegalMoves.get(from);
+    int[][] newBoard = makeMove(board, from.i, from.j, to.i, to.j);
+    if (!isCheck(colour, newBoard)) {
+      legalMoves.put(from, to);
+    }
+  }
+  return legalMoves;
+}
