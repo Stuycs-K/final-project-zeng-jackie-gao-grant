@@ -98,3 +98,6 @@ coordinate locateKing(int kingColour) {
   }
   return false;
 }
+boolean isCheck(int kingColour) {
+  return isCheck(kingColour, board);
+}
