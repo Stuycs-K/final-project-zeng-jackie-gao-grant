@@ -72,3 +72,6 @@ class Board {
     board[6][6] = White | Pawn;
     board[7][6] = White | Pawn;
   }
+   void changeTurn() {
+    turn = turn == White ? Black : White;
+  }
