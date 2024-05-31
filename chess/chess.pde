@@ -1,40 +1,49 @@
 int[][] board;
-int squareSize=10;
-void setup() {
-  //load piece images
-  PImage WhitePawn = loadImage("WhitePawn.png");
-  PImage WhiteKnight = loadImage("WhiteKnight.jpg");
-  PImage WhiteBishop = loadImage("WhiteBishop.png");
-  PImage WhiteRook = loadImage("WhiteRook.png");
-  PImage WhiteQueen = loadImage("WhiteQueen.png");
-  PImage WhiteKing = loadImage("WhiteKing.png");
 
-  PImage BlackPawn = loadImage("BlackPawn.jpeg");
-  PImage BlackKnight = loadImage("BlackNight.png");
-  PImage BlackBishop = loadImage("BlackBishop.png");
-  PImage BlackRook = loadImage("BlackRook.jpg");
-  PImage BlackQueen = loadImage("BlackQueen.jpg");
-  PImage BlackKing = loadImage("BlackKing.png");
-  
-  WhitePawn.resize(squareSize, squareSize);
-  WhiteKnight.resize(squareSize, squareSize);
-  WhiteBishop.resize(squareSize, squareSize);
-  WhiteRook.resize(squareSize, squareSize);
-  WhiteQueen.resize(squareSize, squareSize);
-  WhiteKing.resize(squareSize, squareSize);
+int[] lightSquareColour = {238,238,210,255};
+int[] darkSquareColour = {117,150,86,255};
+int[] lastMoveColour1 = {50, 255, 50, 40};
+int[] lastMoveColour2 = {50, 255, 50, 60};
+int[] selectedSquareColour = {0, 150, 255, 50};
+int[] possibleMovesColour = {255, 0, 0, 60};
 
-  BlackPawn.resize(squareSize, squareSize);
-  BlackKnight.resize(squareSize, squareSize);
-  BlackBishop.resize(squareSize, squareSize);
-  BlackRook.resize(squareSize, squareSize);
-  BlackQueen.resize(squareSize, squareSize);
-  BlackKing.resize(squareSize, squareSize);
+int squareSize = 100;
+final int None = 0;
+final int Pawn = 1;
+final int Knight = 2;
+final int Bishop = 3;
+final int Rook = 4;
+final int Queen = 5;
+final int King = 6;
+final int White = 8;
+final int Black = 16;
 
-  size(1000, 800);
-  board = new int[8][8];
-  setupBoard();
+int turn = White;
 
-  displayBoard();
-  public setupBoard(){
-    
-  }
+PImage WPawn;
+PImage WKnight;
+PImage WBishop;
+PImage WRook;
+PImage WQueen;
+PImage WKing;
+
+PImage BPawn;
+PImage BKnight;
+PImage BBishop;
+PImage BRook;
+PImage BQueen;
+PImage BKing;
+coordinate selectedSquare = null;
+boolean WKingMoved = false;
+boolean BKingMoved = false;
+boolean WQRookMoved = false;
+boolean WKRookMoved = false;
+boolean BQRookMoved = false;
+boolean BKRookMoved = false;
+
+
+coordinate pMove1 = null;
+coordinate pMove2 = null;
+
+boolean promotion = false;
+coordinate promotionPosition = null;
