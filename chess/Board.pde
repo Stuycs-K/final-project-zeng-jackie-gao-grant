@@ -101,3 +101,6 @@ coordinate locateKing(int kingColour) {
 boolean isCheck(int kingColour) {
   return isCheck(kingColour, board);
 }
+HashMap<coordinate, coordinate> generateLegalMoves(int colour) {
+  HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(colour);
+  HashMap<coordinate, coordinate> legalMoves = new HashMap<>();
