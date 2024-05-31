@@ -18,6 +18,14 @@ Worked on creating and started writing methods Rook, Knight, Queen classes
 
 Finished up allpossiblemove methods for Rook and Bishop
 
+### 5/30
+
+Worked on reworking board class.
+
+### 5/31 
+
+Fixed code for legal moves for king, rook, queen
+
 ## GROUP MEMBER 2
 
 ### 5/23/24
