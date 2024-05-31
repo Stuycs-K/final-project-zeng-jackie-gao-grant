@@ -140,3 +140,15 @@ void mousePressed() {
   checkForGameOver(board, turn);
   displayBoard();
 }
+String checkForGameOver(int[][] b, int t) {
+  HashMap<coordinate, coordinate> moves = generateLegalMoves(b, t);
+  if (moves.size() == 0) {
+    if (isCheck(b, t)) {
+      return "Checkmate";
+    } else {
+      return "Stalemate";
+    }
+  }
+
+  return "";
+}
