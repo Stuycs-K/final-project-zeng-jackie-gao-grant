@@ -39,6 +39,6 @@ Worked on creating and starting Bishop and King CLasses.
 Worked on King getPossibleMoves
 
 ### 5/30/24
-Worked on creating the board
+Worked on creating the board, reworked rook knight and bishop classes.
 
 
