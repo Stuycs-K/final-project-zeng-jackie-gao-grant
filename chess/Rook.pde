@@ -44,3 +44,4 @@ class Rook extends piece {
     }
     return moves;
   }
+}
