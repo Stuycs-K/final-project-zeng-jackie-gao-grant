@@ -75,3 +75,13 @@ class Board {
    void changeTurn() {
     turn = turn == White ? Black : White;
   }
+  coordinate locateKing(int kingColour, int[][] board) {
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (board[i][j] == (kingColour | King)) {
+        return new coordinate(i, j);
+      }
+    }
+  }
+  return new coordinate(-1, -1);
+}
