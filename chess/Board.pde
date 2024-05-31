@@ -88,3 +88,13 @@ class Board {
 coordinate locateKing(int kingColour) {
   return locateKing(kingColour, board);
 }
+  boolean isCheck(int kingColour, int[][] board) {
+  HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(otherColour(kingColour), board);
+  coordinate kingLocation = locateKing(kingColour, board);
+  for (coordinate c : pseudoLegalMoves.values()) {
+    if (c.i == kingLocation.i && c.j == kingLocation.j) {
+      return true;
+    }
+  }
+  return false;
+}
