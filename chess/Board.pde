@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -105,7 +104,6 @@ boolean isCheck(int kingColour) {
 HashMap<coordinate, coordinate> generateLegalMoves(int colour) {
   HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(colour);
   HashMap<coordinate, coordinate> legalMoves = new HashMap<>();
-=======
 class Board {
     int[][] board;
     coordinate selectedSquare;
@@ -139,4 +137,3 @@ void setupPieces() {
         board[3][7] = White | Queen;
         board[4][7] = White | King;
     }
->>>>>>> origin

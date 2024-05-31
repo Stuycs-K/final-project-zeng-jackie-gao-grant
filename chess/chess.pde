@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 int[] lightSquareColour = {238,238,210,255};
 int[] darkSquareColour = {117,150,86,255};
 int[] lastMoveColour1 = {50, 255, 50, 40};
@@ -197,7 +196,6 @@ void displayBoard() {
       }
     }
   }
-=======
 int[][] board;
 
 int[] lightSquareColour = {238,238,210,255};
@@ -247,4 +245,3 @@ coordinate pMove2 = null;
 
 boolean promotion = false;
 coordinate promotionPosition = null;
->>>>>>> origin
