@@ -152,3 +152,32 @@ String checkForGameOver(int[][] b, int t) {
 
   return "";
 }
+int[][] makeUpdatingMove(int[][] b, int i1, int j1, int i2, int j2) {
+  int[][] temp = makeMove(b, i1, j1, i2, j2);
+  if (selectedPiece(selectedSquare) == (White | King)) {
+    WKingMoved = true;
+  }
+  if (selectedPiece(selectedSquare) == (Black | King)) {
+    BKingMoved = true;
+  }
+  if (selectedPiece(selectedSquare) == (White | Rook) && i1 == 0) {
+    WQRookMoved = true;
+  }
+  if (selectedPiece(selectedSquare) == (White | Rook) && i1 == 7) {
+    WKRookMoved = true;
+  }
+  if (selectedPiece(selectedSquare) == (Black | Rook) && i1 == 0) {
+    BQRookMoved = true;
+  }
+  if (selectedPiece(selectedSquare) == (Black | Rook) && i1 == 7) {
+    BKRookMoved = true;
+  }
+  pMove1 = new coordinate(i1, j1);
+  pMove2 = new coordinate(i2, j2);
+
+  if (j2 == (turn == White ? 0 : 7) && (selectedPiece(selectedSquare) == (White | Pawn) || selectedPiece(selectedSquare) == (Black | Pawn))) { //promotion
+    promotion = true;
+    promotionPosition = new coordinate(i2, j2);
+  }
+  return temp;
+}
