@@ -16,3 +16,32 @@ class King extends Piece {
         }
       }
     }
+     if (colour == chessBoard.White && !chessBoard.WKingMoved) {
+      if (!chessBoard.WKRookMoved && board[5][7] == chessBoard.None && board[6][7] == chessBoard.None) {
+        if (!chessBoard.isCheck(chessBoard.White) && !chessBoard.isCheck(chessBoard.White)) {
+          moves.add(new coordinate(6, 7));
+        }
+      }
+      if (!chessBoard.WQRookMoved && board[1][7] == chessBoard.None && board[2][7] == chessBoard.None && board[3][7] == chessBoard.None) {
+        if (!chessBoard.isCheck(chessBoard.White) && !chessBoard.isCheck(chessBoard.White)) {
+          moves.add(new coordinate(2, 7));
+        }
+      }
+    }
+
+    if (colour == chessBoard.Black && !chessBoard.BKingMoved) {
+      if (!chessBoard.BKRookMoved && board[5][0] == chessBoard.None && board[6][0] == chessBoard.None) {
+        if (!chessBoard.isCheck(chessBoard.Black) && !chessBoard.isCheck(chessBoard.Black)) {
+          moves.add(new coordinate(6, 0));
+        }
+      }
+      if (!chessBoard.BQRookMoved && board[1][0] == chessBoard.None && board[2][0] == chessBoard.None && board[3][0] == chessBoard.None) {
+        if (!chessBoard.isCheck(chessBoard.Black) && !chessBoard.isCheck(chessBoard.Black)) {
+          moves.add(new coordinate(2, 0));
+        }
+      }
+    }
+
+    return moves;
+  }
+}
