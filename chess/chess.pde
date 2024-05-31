@@ -55,7 +55,6 @@ boolean promotion = false;
 coordinate promotionPosition = null;
 
 void setup() {
-  //load piece images
   WPawn = loadImage("WhitePawn.png");
   WKnight = loadImage("WhiteKnight.png");
   WBishop = loadImage("WhiteBishop.png");
@@ -97,4 +96,47 @@ void changeTurn() {
 
 void draw() {
   if(millis() < 5000)displayBoard();
+}
+void mousePressed() {
+  if (promotion) {
+    changeTurn();
+    int choice = floor(mouseX / (width / 4));
+    if (choice == 0) {
+      board[promotionPosition.i][promotionPosition.j] = turn | Queen;
+    }
+    if (choice == 1) {
+      board[promotionPosition.i][promotionPosition.j] = turn | Rook;
+    }
+    if (choice == 2) {
+      board[promotionPosition.i][promotionPosition.j] = turn | Bishop;
+    }
+    if (choice == 3) {
+      board[promotionPosition.i][promotionPosition.j] = turn | Knight;
+    }
+    changeTurn();
+    promotion = false;
+  } else {
+    coordinate klc = locateKing(board, White);
+    if (selectedSquare == null) {
+      if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 800) {
+        selectedSquare = new coordinate(floor(mouseX / squareSize), floor(mouseY / squareSize));
+      }
+    } else {
+      ArrayList<move> moves = movesFromSquare(board, selectedSquare, turn);
+      for (move m : moves) {
+        if (floor(mouseX / squareSize) == m.i2 && floor(mouseY / squareSize) == m.j2) {
+          //make the move
+          int[][] temp = makeUpdatingMove(board, m.i1, m.j1, m.i2, m.j2);
+          board = temp;
+          selectedSquare = null;
+          changeTurn();
+          displayBoard();
+          break;
+        }
+      }
+      selectedSquare = null;
+    }
+  }
+  checkForGameOver(board, turn);
+  displayBoard();
 }
