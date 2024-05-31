@@ -1,45 +1,26 @@
-class Rook extends piece {
-  Rook(int pieceColor) {
-    super(pieceColor);
+class Rook extends Piece {
+  Rook(int colour) {
+    super(colour, chessBoard.Rook);
   }
 
-  PImage getImage() {
-    return (pieceColor == White) ? WhiteRook : BlackRook;
-  }
-
-    ArrayList<move> getPossibleMoves(Piece[][] board, int x, int y) {
-    ArrayList<move> moves = new ArrayList<move>();
-    for (int i = x + 1; i < 8; i++) {
-      if (board[i][y] == null) {
-        moves.add(new move(x, y, i, y));
-      } else {
-        if (board[i][y].pieceColor != pieceColor)
-        moves.add(new move(x, y, i, y));
-        break;
-      }
-    }
-    for (int i = x - 1; i >= 0; i--) {
-      if (board[i][y] == null) {
-        moves.add(new move(x, y, i, y));
-      } else {
-        if (board[i][y].pieceColor != pieceColor) moves.add(new move(x, y, i, y));
-        break;
-      }
-    }
-    for (int j = y + 1; j < 8; j++) {
-      if (board[x][j] == null) {
-        moves.add(new move(x, y, x, j));
-      } else {
-        if (board[x][j].pieceColor != pieceColor) moves.add(new move(x, y, x, j));
-        break;
-      }
-    }
-    for (int j = y - 1; j >= 0; j--) {
-      if (board[x][j] == null) {
-        moves.add(new move(x, y, x, j));
-      } else {
-        if (board[x][j].pieceColor != pieceColor) moves.add(new move(x, y, x, j));
-        break;
+  @Override
+  ArrayList<coordinate> generateMoves(int[][] board, coordinate pos) {
+    ArrayList<coordinate> moves = new ArrayList<>();
+    int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    for (int[] dir : directions) {
+      for (int dist = 1; dist < 8; dist++) {
+        int newI = pos.i + dir[0] * dist;
+        int newJ = pos.j + dir[1] * dist;
+        if (newI >= 0 && newI < 8 && newJ >= 0 && newJ < 8) {
+          if (board[newI][newJ] == chessBoard.None) {
+            moves.add(new coordinate(newI, newJ));
+          } else {
+            if ((board[newI][newJ] & 24) != colour) {
+              moves.add(new coordinate(newI, newJ));
+            }
+            break;
+          }
+        }
       }
     }
     return moves;
