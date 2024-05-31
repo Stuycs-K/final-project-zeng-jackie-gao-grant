@@ -196,52 +196,56 @@ void displayBoard() {
       }
     }
   }
-int[][] board;
 
-int[] lightSquareColour = {238,238,210,255};
-int[] darkSquareColour = {117,150,86,255};
-int[] lastMoveColour1 = {50, 255, 50, 40};
-int[] lastMoveColour2 = {50, 255, 50, 60};
-int[] selectedSquareColour = {0, 150, 255, 50};
-int[] possibleMovesColour = {255, 0, 0, 60};
+  if (selectedSquare != null) {
+    fill(selectedSquareColour[0], selectedSquareColour[1], selectedSquareColour[2], selectedSquareColour[3]);
+    noStroke();
+    rect(selectedSquare.i * squareSize, selectedSquare.j * squareSize, squareSize, squareSize);
 
-int squareSize = 100;
-final int None = 0;
-final int Pawn = 1;
-final int Knight = 2;
-final int Bishop = 3;
-final int Rook = 4;
-final int Queen = 5;
-final int King = 6;
-final int White = 8;
-final int Black = 16;
+    if (chessBoard.selectedPiece(selectedSquare) != chessBoard.None) {
+      ArrayList<move> moves = movesFromSquare(chessBoard.board, selectedSquare, chessBoard.turn);
+      for (move m : moves) {
+        noStroke();
+        fill(possibleMovesColour[0], possibleMovesColour[1], possibleMovesColour[2], possibleMovesColour[3]);
+        rect(m.i2 * squareSize, m.j2 * squareSize, squareSize, squareSize);
+      }
+    }
+  }
 
-int turn = White;
+  String gameOver = chessBoard.checkForGameOver();
+  textSize(30);
+  strokeWeight(3);
+  stroke(0);
+  fill(255);
+  text(gameOver, 810, height / 2);
 
-PImage WPawn;
-PImage WKnight;
-PImage WBishop;
-PImage WRook;
-PImage WQueen;
-PImage WKing;
+  if (chessBoard.turn == chessBoard.White) {
+    text("White to move", 810, 700);
+  }
 
-PImage BPawn;
-PImage BKnight;
-PImage BBishop;
-PImage BRook;
-PImage BQueen;
-PImage BKing;
-coordinate selectedSquare = null;
-boolean WKingMoved = false;
-boolean BKingMoved = false;
-boolean WQRookMoved = false;
-boolean WKRookMoved = false;
-boolean BQRookMoved = false;
-boolean BKRookMoved = false;
+  if (chessBoard.turn == chessBoard.Black) {
+    text("Black to move", 810, 100);
+  }
 
-
-coordinate pMove1 = null;
-coordinate pMove2 = null;
-
-boolean promotion = false;
-coordinate promotionPosition = null;
+  if (chessBoard.promotion) {
+    chessBoard.changeTurn();
+    noStroke();
+    fill(50, 40);
+    rect(0, 0, width, height);
+    if (chessBoard.turn == chessBoard.White) {
+      imageMode(CENTER);
+      image(WQueen, 0.125 * width, height / 2);
+      image(WRook, 0.375 * width, height / 2);
+      image(WBishop, 0.625 * width, height / 2);
+      image(WKnight, 0.875 * width, height / 2);
+    }
+    if (chessBoard.turn == chessBoard.Black) {
+      imageMode(CENTER);
+      image(BQueen, 0.125 * width, height / 2);
+      image(BRook, 0.375 * width, height / 2);
+      image(BBishop, 0.625 * width, height / 2);
+      image(BKnight, 0.875 * width, height / 2);
+    }
+    chessBoard.changeTurn();
+  }
+}
