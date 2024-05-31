@@ -1,14 +1,11 @@
-abstract class piece {
-  int pieceColor;
-  boolean hasMoved;
+abstract class Piece {
+  int colour;
+  int type;
 
-  public void Piece(int pieceColor) {
-    this.pieceColor = pieceColor;
-    this.hasMoved = false;
+  Piece(int colour, int type) {
+    this.colour = colour;
+    this.type = type;
   }
 
-  abstract PImage getImage();
-
-  abstract ArrayList<move> getPossibleMoves(piece[][] board, int x, int y);
-  
+  abstract ArrayList<coordinate> generateMoves(int[][] board, coordinate pos);
 }
