@@ -1,28 +1,20 @@
-class Pawn extends piece {
-  Pawn(int pieceColor) {
-    super(pieceColor);
+class Pawn extends Piece {
+  Pawn(int colour) {
+    super(colour, chessBoard.Pawn);
   }
 
-  PImage getImage() {
-    return (pieceColor == White) ? WhitePawn : BlackPawn;
-  }
+  @Override
+  ArrayList<coordinate> generateMoves(int[][] board, coordinate pos) {
+    ArrayList<coordinate> moves = new ArrayList<>();
+    int direction = (colour == chessBoard.White) ? -1 : 1;
 
-  ArrayList<move> getPossibleMoves(Piece[][] board, int x, int y) {
-    ArrayList<move> moves = new ArrayList<move>();
-    int direction = (pieceColor == White) ? -1 : 1;
-    int startRow = (pieceColor == White) ? 6 : 1;
-    if (board[x][y + direction] == null) {
-        moves.add(new move(x, y, x, y + direction));
-        if (y == startRow && board[x][y + 2 * direction] == null) {
-        moves.add(new move(x, y, x, y + 2 * direction));
+    // Normal move
+    if (pos.j + direction >= 0 && pos.j + direction < 8 && board[pos.i][pos.j + direction] == chessBoard.None) {
+      moves.add(new coordinate(pos.i, pos.j + direction));
+      // Double move
+      if ((pos.j == 6 && colour == chessBoard.White) || (pos.j == 1 && colour == chessBoard.Black)) {
+        if (pos.j + 2 * direction >= 0 && pos.j + 2 * direction < 8 && board[pos.i][pos.j + 2 * direction] == chessBoard.None) {
+          moves.add(new coordinate(pos.i, pos.j + 2 * direction));
+        }
       }
     }
-    if (x > 0 && board[x - 1][y + direction] != null && board[x - 1][y + direction].pieceColor != pieceColor) {
-      moves.add(new move(x, y, x - 1, y + direction));
-    }
-    if (x < 7 && board[x + 1][y + direction] != null && board[x + 1][y + direction].pieceColor != pieceColor) {
-      moves.add(new move(x, y, x + 1, y + direction));
-    }
-    return moves;  
-  }
-}
