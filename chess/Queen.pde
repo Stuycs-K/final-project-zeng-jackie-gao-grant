@@ -1,10 +1,28 @@
-class Queen extends piece {
-  Queen(int pieceColor) {
-    super(pieceColor);
+class Queen extends Piece {
+  Queen(int colour) {
+    super(colour, chessBoard.Queen);
   }
 
-  PImage getImage() {
-    return (pieceColor == White) ? WhiteQueen : BlackQueen;
+  @Override
+  ArrayList<coordinate> generateMoves(int[][] board, coordinate pos) {
+    ArrayList<coordinate> moves = new ArrayList<>();
+    int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    for (int[] dir : directions) {
+      for (int dist = 1; dist < 8; dist++) {
+        int newI = pos.i + dir[0] * dist;
+        int newJ = pos.j + dir[1] * dist;
+        if (newI >= 0 && newI < 8 && newJ >= 0 && newJ < 8) {
+          if (board[newI][newJ] == chessBoard.None) {
+            moves.add(new coordinate(newI, newJ));
+          } else {
+            if ((board[newI][newJ] & 24) != colour) {
+              moves.add(new coordinate(newI, newJ));
+            }
+            break;
+          }
+        }
+      }
+    }
+    return moves;
   }
-
-  ArrayList<move> getPossibleMoves(Piece[][] board, int x, int y) {
+}
