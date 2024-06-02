@@ -151,3 +151,83 @@ HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour, int[][] boa
   }
   return moves;
 }
+HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour) {
+  return generatePseudoLegalMoves(colour, board);
+}
+
+
+  boolean emptySquare(int i, int j) {
+    return board[i][j] == None;
+  }
+  int otherColour(int c) {
+    return (c == White ? Black : White);
+  }
+  boolean enemyPiece(int i, int j, int friendly) {
+    if (pieceColour(board[i][j]) != friendly && board[i][j] != None) {
+      return true;
+    }
+    return false;
+  }
+
+  int[][] makeMove(int[][] b, int i1, int j1, int i2, int j2) {
+    int[][] newBoard = new int[8][8];
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+        newBoard[i][j] = b[i][j];
+      }
+    }
+    if (newBoard[i1][j1] == (White | King)) {
+      if (i1 == 4 && i2 == 6) {
+        newBoard[7][7] = None;
+        newBoard[5][7] = White | Rook;
+      }
+      if (i1 == 4 && i2 == 2) {
+        newBoard[0][7] = None;
+        newBoard[3][7] = White | Rook;
+      }
+    }
+    if (newBoard[i1][j1] == (Black | King)) {
+      if (i1 == 4 && i2 == 6) {
+        newBoard[7][0] = None;
+        newBoard[5][0] = Black | Rook;
+      }
+      if (i1 == 4 && i2 == 2) {
+        newBoard[0][0] = None;
+        newBoard[3][0] = Black | Rook;
+      }
+    }
+    if (newBoard[i1][j1] == (White | Pawn) || newBoard[i1][j1] == (Black | Pawn)) {
+      if (i1 != i2 && j1 != j2) {
+        if (newBoard[i2][j2] == None) {
+          newBoard[i2][j1] = None;
+        }
+      }
+    }
+    int temp = b[i1][j1];
+    newBoard[i1][j1] = None;
+    newBoard[i2][j2] = temp;
+
+    return newBoard;
+  }
+
+  int pieceColour(int p) {
+    return (p >> 3) * 8;
+  }
+
+  int selectedPiece(coordinate sq) {
+    return board[sq.i][sq.j];
+  }
+
+  String checkForGameOver() {
+    HashMap<coordinate, coordinate> moves = generateLegalMoves(turn);
+    if (moves.size() == 0) {
+      if (isCheck(turn)) {
+        return "Checkmate";
+      } else {
+        return "Stalemate";
+      }
+    }
+    return "";
+  }
+
+}
