@@ -52,4 +52,7 @@ Worked on creating the board, reworked rook knight and bishop classes.
 ### 5/31/24
 Worked on Board move methods
 
+### 6/2/24
+Imported all of the images, debugged move and coordinate classes and finished Board move methods.
+
 
