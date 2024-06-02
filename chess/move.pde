@@ -1,13 +1,13 @@
 public class move{
-  int x1;
-  int x2;
-  int y1;
-  int y2;
+  int i1;
+  int i2;
+  int j1;
+  int j2;
   public move(int x1, int y1, int x2, int y2){
-    x1 = this.x1;
-    x2 = this.x2;
-    y1 = this.y1;
-    y2 = this.y2;
+    i1 = this.i1;
+    i2 = this.i2;
+    j1 = this.j1;
+    j2 = this.j2;
   }
 }
   

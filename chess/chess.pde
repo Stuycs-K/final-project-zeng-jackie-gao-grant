@@ -63,48 +63,8 @@ void draw() {
   if (millis() < 5000) displayBoard();
 }
 
-void mousePressed() {
-  if (chessBoard.promotion) {
-    chessBoard.changeTurn();
-    int choice = floor(mouseX / (width / 4));
-    if (choice == 0) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Queen;
-    }
-    if (choice == 1) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Rook;
-    }
-    if (choice == 2) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Bishop;
-    }
-    if (choice == 3) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Knight;
-    }
-    chessBoard.changeTurn();
-    chessBoard.promotion = false;
-  } else {
-    coordinate klc = chessBoard.locateKing(chessBoard.White);
-    if (selectedSquare == null) {
-      if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 800) {
-        selectedSquare = new coordinate(floor(mouseX / squareSize), floor(mouseY / squareSize));
-      }
-    } else {
-      ArrayList<move> moves = movesFromSquare(chessBoard.board, selectedSquare, chessBoard.turn);
-      for (move m : moves) {
-        if (floor(mouseX / squareSize) == m.i2 && floor(mouseY / squareSize) == m.j2) {
-          int[][] temp = chessBoard.makeUpdatingMove(chessBoard.board, m.i1, m.j1, m.i2, m.j2);
-          chessBoard.board = temp;
-          selectedSquare = null;
-          chessBoard.changeTurn();
-          displayBoard();
-          break;
-        }
-      }
-      selectedSquare = null;
-    }
-  }
-  chessBoard.checkForGameOver();
-  displayBoard();
-}
+
+
 
 ArrayList<move> movesFromSquare(int[][] b, coordinate sq, int whoseTurn) {
   ArrayList<move> moves = new ArrayList<move>();
