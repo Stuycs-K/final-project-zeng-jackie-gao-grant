@@ -1,8 +1,9 @@
-public class coordinate{
+public class coordinate {
   private int i;
   private int j;
-  public coordinate(int i, int j){
-    i=this.i;
-    j=this.j;
+
+  coordinate(int i_, int j_) {
+    this.i = i_;
+    this.j = j_;
   }
 }
