@@ -26,6 +26,14 @@ Worked on reworking board class.
 
 Fixed code for legal moves for king, rook, queen
 
+## 6/1/24
+
+Worked on fixing board class and setup
+
+## 6/2/24
+
+Finished chess basic game
+
 ## GROUP MEMBER 2
 
 ### 5/23/24
