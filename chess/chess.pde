@@ -304,8 +304,20 @@ void displayBoard() {
     }
     chessBoard.changeTurn();
   }
+
+
+  displayCheckCondition();
 }
 
+void displayCheckCondition() {
+  fill(255, 0, 0);
+  textSize(25);
+  if (chessBoard.isCheck(chessBoard.White)) {
+    text("White is in check!", 900, 600);
+  } else if (chessBoard.isCheck(chessBoard.Black)) {
+    text("Black is in check!", 900, 150);
+  }
+}
 void displayTimers() {
   fill(255);
   textSize(20);
