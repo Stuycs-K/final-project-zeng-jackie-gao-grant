@@ -4,7 +4,7 @@ int[] lastMoveColour1 = {50, 255, 50, 40};
 int[] lastMoveColour2 = {50, 255, 50, 60};
 int[] selectedSquareColour = {0, 150, 255, 50};
 int[] possibleMovesColour = {255, 0, 0, 60};
-ArrayList<GameState> gameStateHistory = new ArrayList<>();
+
 int squareSize = 100;
 
 PImage WPawn;
@@ -31,6 +31,7 @@ int blackTime;
 int lastMoveTime;
 boolean gameOver = false;
 
+ArrayList<GameState> gameStateHistory = new ArrayList<>();
 
 boolean inMenu = true;
 int[] timeOptions = {300000, 600000, 900000}; // 5, 10, 15 minutes in milliseconds
@@ -275,7 +276,7 @@ void displayBoard() {
   strokeWeight(3);
   stroke(0);
   fill(255);
-  text(gameOverMessage, 890, height / 2+30);
+  text(gameOverMessage, 890, height / 2 + 30);
 
   if (chessBoard.turn == chessBoard.White) {
     text("White to move", 900, 700);
@@ -305,7 +306,6 @@ void displayBoard() {
     chessBoard.changeTurn();
   }
 
-
   displayCheckCondition();
 }
 
@@ -318,6 +318,7 @@ void displayCheckCondition() {
     text("Black is in check!", 900, 150);
   }
 }
+
 void displayTimers() {
   fill(255);
   textSize(20);
