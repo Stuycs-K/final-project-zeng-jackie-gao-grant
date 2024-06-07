@@ -34,6 +34,10 @@ Worked on fixing board class and setup
 
 Finished chess basic game
 
+## 6/7/24
+
+Added menu screen for time control and also additional text saying when there is check.
+
 ## GROUP MEMBER 2
 
 ### 5/23/24
