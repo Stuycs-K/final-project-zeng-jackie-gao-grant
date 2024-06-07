@@ -4,7 +4,7 @@ int[] lastMoveColour1 = {50, 255, 50, 40};
 int[] lastMoveColour2 = {50, 255, 50, 60};
 int[] selectedSquareColour = {0, 150, 255, 50};
 int[] possibleMovesColour = {255, 0, 0, 60};
-
+ArrayList<GameState> gameStateHistory = new ArrayList<>();
 int squareSize = 100;
 
 PImage WPawn;
