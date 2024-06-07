@@ -38,3 +38,29 @@ class GameState {
     this.promotionPosition = promotionPosition != null ? new coordinate(promotionPosition.i, promotionPosition.j) : null;
   }
 }
+void saveGameState() {
+  gameStateHistory.add(new GameState(chessBoard.board, chessBoard.turn, whiteTime, blackTime,
+                                    chessBoard.WKingMoved, chessBoard.BKingMoved, chessBoard.WQRookMoved, chessBoard.WKRookMoved,
+                                    chessBoard.BQRookMoved, chessBoard.BKRookMoved, chessBoard.pMove1, chessBoard.pMove2,
+                                    chessBoard.promotion, chessBoard.promotionPosition));
+}
+void undoMove() {
+  if (gameStateHistory.size() > 0) {
+    GameState previousState = gameStateHistory.remove(gameStateHistory.size() - 1);
+    chessBoard.board = previousState.board;
+    chessBoard.turn = previousState.turn;
+    whiteTime = previousState.whiteTime;
+    blackTime = previousState.blackTime;
+    chessBoard.WKingMoved = previousState.WKingMoved;
+    chessBoard.BKingMoved = previousState.BKingMoved;
+    chessBoard.WQRookMoved = previousState.WQRookMoved;
+    chessBoard.WKRookMoved = previousState.WKRookMoved;
+    chessBoard.BQRookMoved = previousState.BQRookMoved;
+    chessBoard.BKRookMoved = previousState.BKRookMoved;
+    chessBoard.pMove1 = previousState.pMove1;
+    chessBoard.pMove2 = previousState.pMove2;
+    chessBoard.promotion = previousState.promotion;
+    chessBoard.promotionPosition = previousState.promotionPosition;
+    displayBoard();
+  }
+}
