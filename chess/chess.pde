@@ -31,6 +31,7 @@ int blackTime;
 int lastMoveTime;
 boolean gameOver = false;
 
+ArrayList<GameState> gameStateHistory = new ArrayList<>();
 
 boolean inMenu = true;
 int[] timeOptions = {300000, 600000, 900000}; // 5, 10, 15 minutes in milliseconds
@@ -275,7 +276,7 @@ void displayBoard() {
   strokeWeight(3);
   stroke(0);
   fill(255);
-  text(gameOverMessage, 890, height / 2+30);
+  text(gameOverMessage, 890, height / 2 + 30);
 
   if (chessBoard.turn == chessBoard.White) {
     text("White to move", 900, 700);
@@ -305,7 +306,6 @@ void displayBoard() {
     chessBoard.changeTurn();
   }
 
-
   displayCheckCondition();
 }
 
@@ -318,6 +318,7 @@ void displayCheckCondition() {
     text("Black is in check!", 900, 150);
   }
 }
+
 void displayTimers() {
   fill(255);
   textSize(20);
@@ -366,4 +367,35 @@ void displayMenu() {
   rect(400, 600, 200, 50);
   fill(0);
   text("Start Game", 500, 625);
+}
+void saveGameState() {
+  gameStateHistory.add(new GameState(chessBoard.board, chessBoard.turn, whiteTime, blackTime,
+                                    chessBoard.WKingMoved, chessBoard.BKingMoved, chessBoard.WQRookMoved, chessBoard.WKRookMoved,
+                                    chessBoard.BQRookMoved, chessBoard.BKRookMoved, chessBoard.pMove1, chessBoard.pMove2,
+                                    chessBoard.promotion, chessBoard.promotionPosition));
+}
+void undoMove() {
+  if (gameStateHistory.size() > 0) {
+    GameState previousState = gameStateHistory.remove(gameStateHistory.size() - 1);
+    chessBoard.board = previousState.board;
+    chessBoard.turn = previousState.turn;
+    whiteTime = previousState.whiteTime;
+    blackTime = previousState.blackTime;
+    chessBoard.WKingMoved = previousState.WKingMoved;
+    chessBoard.BKingMoved = previousState.BKingMoved;
+    chessBoard.WQRookMoved = previousState.WQRookMoved;
+    chessBoard.WKRookMoved = previousState.WKRookMoved;
+    chessBoard.BQRookMoved = previousState.BQRookMoved;
+    chessBoard.BKRookMoved = previousState.BKRookMoved;
+    chessBoard.pMove1 = previousState.pMove1;
+    chessBoard.pMove2 = previousState.pMove2;
+    chessBoard.promotion = previousState.promotion;
+    chessBoard.promotionPosition = previousState.promotionPosition;
+    displayBoard();
+  }
+}
+void keyPressed() {
+  if (key == 'u' || key == 'U') {
+    undoMove();
+  }
 }

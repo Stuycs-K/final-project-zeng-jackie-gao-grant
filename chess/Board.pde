@@ -238,6 +238,7 @@ class Board {
   }
 
   int[][] makeUpdatingMove(int[][] b, int i1, int j1, int i2, int j2) {
+    saveGameState();
     int[][] temp = makeMove(b, i1, j1, i2, j2);
     if (selectedPiece(new coordinate(i1, j1)) == (White | King)) {
       WKingMoved = true;
