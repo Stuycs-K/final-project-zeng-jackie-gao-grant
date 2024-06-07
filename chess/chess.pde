@@ -1,5 +1,5 @@
-int[] lightSquareColour = {238,238,210,255};
-int[] darkSquareColour = {117,150,86,255};
+int[] lightSquareColour = {238, 238, 210, 255};
+int[] darkSquareColour = {117, 150, 86, 255};
 int[] lastMoveColour1 = {50, 255, 50, 40};
 int[] lastMoveColour2 = {50, 255, 50, 60};
 int[] selectedSquareColour = {0, 150, 255, 50};
@@ -24,6 +24,18 @@ PImage BKing;
 coordinate selectedSquare = null;
 
 Board chessBoard;
+
+// Timer variables
+int whiteTime;
+int blackTime;
+int lastMoveTime;
+boolean gameOver = false;
+
+
+boolean inMenu = true;
+int[] timeOptions = {300000, 600000, 900000}; // 5, 10, 15 minutes in milliseconds
+String[] timeOptionLabels = {"5 minutes", "10 minutes", "15 minutes"};
+int selectedTimeIndex = 1; // Default to 10 minutes
 
 void setup() {
   WPawn = loadImage("WhitePawn.png");
@@ -56,54 +68,96 @@ void setup() {
 
   size(1000, 800);
   chessBoard = new Board();
-  displayBoard();
+  displayMenu();
 }
 
 void draw() {
-  if (millis() < 5000) displayBoard();
+  if (inMenu) {
+    displayMenu();
+  } else {
+    if (!gameOver) {
+      int currentTime = millis();
+      int elapsedTime = currentTime - lastMoveTime;
+      
+      if (chessBoard.turn == chessBoard.White) {
+        whiteTime -= elapsedTime;
+      } else {
+        blackTime -= elapsedTime;
+      }
+
+      lastMoveTime = currentTime;
+
+      if (whiteTime <= 0 || blackTime <= 0) {
+        gameOver = true;
+        displayBoard();
+      } else {
+        displayBoard();
+        displayTimers();
+      }
+    } else {
+      displayGameOver();
+    }
+  }
 }
 
 void mousePressed() {
-  if (chessBoard.promotion) {
-    chessBoard.changeTurn();
-    int choice = floor(mouseX / (width / 4));
-    if (choice == 0) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Queen;
-    }
-    if (choice == 1) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Rook;
-    }
-    if (choice == 2) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Bishop;
-    }
-    if (choice == 3) {
-      chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Knight;
-    }
-    chessBoard.changeTurn();
-    chessBoard.promotion = false;
-  } else {
-    coordinate klc = chessBoard.locateKing(chessBoard.White);
-    if (selectedSquare == null) {
-      if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 800) {
-        selectedSquare = new coordinate(floor(mouseX / squareSize), floor(mouseY / squareSize));
+  if (inMenu) {
+    for (int i = 0; i < timeOptions.length; i++) {
+      if (mouseX > 400 && mouseX < 600 && mouseY > 200 + i * 100 && mouseY < 250 + i * 100) {
+        selectedTimeIndex = i;
       }
-    } else {
-      ArrayList<move> moves = movesFromSquare(chessBoard.board, selectedSquare, chessBoard.turn);
-      for (move m : moves) {
-        if (floor(mouseX / squareSize) == m.i2 && floor(mouseY / squareSize) == m.j2) {
-          int[][] temp = chessBoard.makeUpdatingMove(chessBoard.board, m.i1, m.j1, m.i2, m.j2);
-          chessBoard.board = temp;
+    }
+    if (mouseX > 400 && mouseX < 600 && mouseY > 600 && mouseY < 650) {
+      whiteTime = timeOptions[selectedTimeIndex];
+      blackTime = timeOptions[selectedTimeIndex];
+      lastMoveTime = millis();
+      inMenu = false;
+    }
+  } else {
+    if (!gameOver) {
+      if (chessBoard.promotion) {
+        chessBoard.changeTurn();
+        int choice = floor(mouseX / (width / 4));
+        if (choice == 0) {
+          chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Queen;
+        }
+        if (choice == 1) {
+          chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Rook;
+        }
+        if (choice == 2) {
+          chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Bishop;
+        }
+        if (choice == 3) {
+          chessBoard.board[chessBoard.promotionPosition.i][chessBoard.promotionPosition.j] = chessBoard.turn | chessBoard.Knight;
+        }
+        chessBoard.changeTurn();
+        chessBoard.promotion = false;
+      } else {
+        coordinate klc = chessBoard.locateKing(chessBoard.White);
+        if (selectedSquare == null) {
+          if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 800) {
+            selectedSquare = new coordinate(floor(mouseX / squareSize), floor(mouseY / squareSize));
+          }
+        } else {
+          ArrayList<move> moves = movesFromSquare(chessBoard.board, selectedSquare, chessBoard.turn);
+          for (move m : moves) {
+            if (floor(mouseX / squareSize) == m.i2 && floor(mouseY / squareSize) == m.j2) {
+              int[][] temp = chessBoard.makeUpdatingMove(chessBoard.board, m.i1, m.j1, m.i2, m.j2);
+              chessBoard.board = temp;
+              selectedSquare = null;
+              chessBoard.changeTurn();
+              lastMoveTime = millis(); // Update the last move time
+              displayBoard();
+              break;
+            }
+          }
           selectedSquare = null;
-          chessBoard.changeTurn();
-          displayBoard();
-          break;
         }
       }
-      selectedSquare = null;
+      chessBoard.checkForGameOver();
+      displayBoard();
     }
   }
-  chessBoard.checkForGameOver();
-  displayBoard();
 }
 
 ArrayList<move> movesFromSquare(int[][] b, coordinate sq, int whoseTurn) {
@@ -112,7 +166,7 @@ ArrayList<move> movesFromSquare(int[][] b, coordinate sq, int whoseTurn) {
   for (coordinate c : plm.keySet()) {
     coordinate v1 = c;
     coordinate v2 = plm.get(c);
-    if (v1.i == sq.i && v1.j == sq.j)moves.add(new move(v1.i, v1.j, v2.i, v2.j));
+    if (v1.i == sq.i && v1.j == sq.j) moves.add(new move(v1.i, v1.j, v2.i, v2.j));
   }
 
   return moves;
@@ -212,19 +266,21 @@ void displayBoard() {
     }
   }
 
-  String gameOver = chessBoard.checkForGameOver();
+  String gameOverMessage = chessBoard.checkForGameOver();
+  if (!gameOverMessage.isEmpty()) {
+    gameOver = true;
+  }
+
   textSize(30);
   strokeWeight(3);
   stroke(0);
   fill(255);
-  text(gameOver, 810, height / 2);
+  text(gameOverMessage, 890, height / 2+30);
 
   if (chessBoard.turn == chessBoard.White) {
-    text("White to move", 810, 700);
-  }
-
-  if (chessBoard.turn == chessBoard.Black) {
-    text("Black to move", 810, 100);
+    text("White to move", 900, 700);
+  } else {
+    text("Black to move", 900, 100);
   }
 
   if (chessBoard.promotion) {
@@ -248,4 +304,66 @@ void displayBoard() {
     }
     chessBoard.changeTurn();
   }
+
+
+  displayCheckCondition();
+}
+
+void displayCheckCondition() {
+  fill(255, 0, 0);
+  textSize(25);
+  if (chessBoard.isCheck(chessBoard.White)) {
+    text("White is in check!", 900, 600);
+  } else if (chessBoard.isCheck(chessBoard.Black)) {
+    text("Black is in check!", 900, 150);
+  }
+}
+void displayTimers() {
+  fill(255);
+  textSize(20);
+  text("White: " + formatTime(whiteTime), 880, 650);
+  text("Black: " + formatTime(blackTime), 880, 50);
+}
+
+String formatTime(int millis) {
+  int seconds = millis / 1000;
+  int minutes = seconds / 60;
+  seconds %= 60;
+  return nf(minutes, 2) + ":" + nf(seconds, 2);
+}
+
+void displayGameOver() {
+  if (whiteTime <= 0 || blackTime <= 0) {
+    fill(255, 0, 0);
+    textSize(20);
+    text("Time's up! " + (whiteTime <= 0 ? "Black wins!" : "White wins!"), 900, height / 2);
+  } else {
+    fill(255, 0, 0);
+    textSize(20);
+    text("Game Over: " + (chessBoard.turn == chessBoard.White ? "Black wins!" : "White wins!"), 900, height / 2);
+  }
+}
+
+void displayMenu() {
+  background(0);
+  fill(255);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text("Select Time Per Player", width / 2, 100);
+  
+  for (int i = 0; i < timeOptions.length; i++) {
+    if (i == selectedTimeIndex) {
+      fill(0, 255, 0);
+    } else {
+      fill(255);
+    }
+    rect(400, 200 + i * 100, 200, 50);
+    fill(0);
+    text(timeOptionLabels[i], 500, 225 + i * 100);
+  }
+
+  fill(0, 255, 0);
+  rect(400, 600, 200, 50);
+  fill(0);
+  text("Start Game", 500, 625);
 }
