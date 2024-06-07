@@ -5,7 +5,6 @@ class Board {
   int[][] board;
   int turn;
 
-
   final int None = 0;
   final int Pawn = 1;
   final int Knight = 2;
@@ -13,7 +12,6 @@ class Board {
   final int Rook = 4;
   final int Queen = 5;
   final int King = 6;
-
 
   final int White = 8;
   final int Black = 16;
@@ -72,96 +70,105 @@ class Board {
     board[6][6] = White | Pawn;
     board[7][6] = White | Pawn;
   }
-   void changeTurn() {
+
+  void changeTurn() {
     turn = turn == White ? Black : White;
   }
+
   coordinate locateKing(int kingColour, int[][] board) {
-  for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 8; j++) {
-      if (board[i][j] == (kingColour | King)) {
-        return new coordinate(i, j);
-      }
-    }
-  }
-  return new coordinate(-1, -1);
-}
-coordinate locateKing(int kingColour) {
-  return locateKing(kingColour, board);
-}
-  boolean isCheck(int kingColour, int[][] board) {
-  HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(otherColour(kingColour), board);
-  coordinate kingLocation = locateKing(kingColour, board);
-  for (coordinate c : pseudoLegalMoves.values()) {
-    if (c.i == kingLocation.i && c.j == kingLocation.j) {
-      return true;
-    }
-  }
-  return false;
-}
-boolean isCheck(int kingColour) {
-  return isCheck(kingColour, board);
-}
-HashMap<coordinate, coordinate> generateLegalMoves(int colour) {
-  HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(colour);
-  HashMap<coordinate, coordinate> legalMoves = new HashMap<>();
-  
-  for (coordinate from : pseudoLegalMoves.keySet()) {
-    coordinate to = pseudoLegalMoves.get(from);
-    int[][] newBoard = makeMove(board, from.i, from.j, to.i, to.j);
-    if (!isCheck(colour, newBoard)) {
-      legalMoves.put(from, to);
-    }
-  }
-  return legalMoves;
-}
-HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour, int[][] board) {
-  HashMap<coordinate, coordinate> moves = new HashMap<>();
-  Piece[][] pieces = new Piece[8][8];
-
-  for (int j = 0; j < 8; j++) {
     for (int i = 0; i < 8; i++) {
-      int pieceAt = board[i][j];
-      int pieceColour = pieceAt & 24;
-      int pieceType = pieceAt & 7;
-
-      if (pieceType == Pawn) {
-        pieces[i][j] = new Pawn(pieceColour);
-      } else if (pieceType == Knight) {
-        pieces[i][j] = new Knight(pieceColour);
-      } else if (pieceType == Bishop) {
-        pieces[i][j] = new Bishop(pieceColour);
-      } else if (pieceType == Rook) {
-        pieces[i][j] = new Rook(pieceColour);
-      } else if (pieceType == Queen) {
-        pieces[i][j] = new Queen(pieceColour);
-      } else if (pieceType == King) {
-        pieces[i][j] = new King(pieceColour);
-      }
-    }
-  }
-  for (int j = 0; j < 8; j++) {
-    for (int i = 0; i < 8; i++) {
-      if (pieces[i][j] != null && pieces[i][j].colour == colour) {
-        ArrayList<coordinate> pieceMoves = pieces[i][j].generateMoves(board, new coordinate(i, j));
-        for (coordinate move : pieceMoves) {
-          moves.put(new coordinate(i, j), move);
+      for (int j = 0; j < 8; j++) {
+        if (board[i][j] == (kingColour | King)) {
+          return new coordinate(i, j);
         }
       }
     }
+    return new coordinate(-1, -1);
   }
-  return moves;
-}
-HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour) {
-  return generatePseudoLegalMoves(colour, board);
-}
 
+  coordinate locateKing(int kingColour) {
+    return locateKing(kingColour, board);
+  }
+
+  boolean isCheck(int kingColour, int[][] board) {
+    HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(otherColour(kingColour), board);
+    coordinate kingLocation = locateKing(kingColour, board);
+    for (coordinate c : pseudoLegalMoves.values()) {
+      if (c.i == kingLocation.i && c.j == kingLocation.j) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  boolean isCheck(int kingColour) {
+    return isCheck(kingColour, board);
+  }
+
+  HashMap<coordinate, coordinate> generateLegalMoves(int colour) {
+    HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(colour);
+    HashMap<coordinate, coordinate> legalMoves = new HashMap<>();
+  
+    for (coordinate from : pseudoLegalMoves.keySet()) {
+      coordinate to = pseudoLegalMoves.get(from);
+      int[][] newBoard = makeMove(board, from.i, from.j, to.i, to.j);
+      if (!isCheck(colour, newBoard)) {
+        legalMoves.put(from, to);
+      }
+    }
+    return legalMoves;
+  }
+
+  HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour, int[][] board) {
+    HashMap<coordinate, coordinate> moves = new HashMap<>();
+    Piece[][] pieces = new Piece[8][8];
+
+    for (int j = 0; j < 8; j++) {
+      for (int i = 0; i < 8; i++) {
+        int pieceAt = board[i][j];
+        int pieceColour = pieceAt & 24;
+        int pieceType = pieceAt & 7;
+
+        if (pieceType == Pawn) {
+          pieces[i][j] = new Pawn(pieceColour);
+        } else if (pieceType == Knight) {
+          pieces[i][j] = new Knight(pieceColour);
+        } else if (pieceType == Bishop) {
+          pieces[i][j] = new Bishop(pieceColour);
+        } else if (pieceType == Rook) {
+          pieces[i][j] = new Rook(pieceColour);
+        } else if (pieceType == Queen) {
+          pieces[i][j] = new Queen(pieceColour);
+        } else if (pieceType == King) {
+          pieces[i][j] = new King(pieceColour);
+        }
+      }
+    }
+    for (int j = 0; j < 8; j++) {
+      for (int i = 0; i < 8; i++) {
+        if (pieces[i][j] != null && pieces[i][j].colour == colour) {
+          ArrayList<coordinate> pieceMoves = pieces[i][j].generateMoves(board, new coordinate(i, j));
+          for (coordinate move : pieceMoves) {
+            moves.put(new coordinate(i, j), move);
+          }
+        }
+      }
+    }
+    return moves;
+  }
+
+  HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour) {
+    return generatePseudoLegalMoves(colour, board);
+  }
 
   boolean emptySquare(int i, int j) {
     return board[i][j] == None;
   }
+
   int otherColour(int c) {
     return (c == White ? Black : White);
   }
+
   boolean enemyPiece(int i, int j, int friendly) {
     if (pieceColour(board[i][j]) != friendly && board[i][j] != None) {
       return true;
@@ -229,7 +236,8 @@ HashMap<coordinate, coordinate> generatePseudoLegalMoves(int colour) {
     }
     return "";
   }
-int[][] makeUpdatingMove(int[][] b, int i1, int j1, int i2, int j2) {
+
+  int[][] makeUpdatingMove(int[][] b, int i1, int j1, int i2, int j2) {
     int[][] temp = makeMove(b, i1, j1, i2, j2);
     if (selectedPiece(new coordinate(i1, j1)) == (White | King)) {
       WKingMoved = true;
