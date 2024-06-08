@@ -30,6 +30,7 @@ int whiteTime;
 int blackTime;
 int lastMoveTime;
 boolean gameOver = false;
+boolean demonstrationMode = false;  // Flag for demonstration mode
 
 ArrayList<GameState> gameStateHistory = new ArrayList<>();
 
@@ -76,7 +77,7 @@ void draw() {
   if (inMenu) {
     displayMenu();
   } else {
-    if (!gameOver) {
+    if (!gameOver || demonstrationMode) {  // Skip game over checks in demonstration mode
       int currentTime = millis();
       int elapsedTime = currentTime - lastMoveTime;
       
@@ -115,7 +116,7 @@ void mousePressed() {
       inMenu = false;
     }
   } else {
-    if (!gameOver) {
+    if (!gameOver || demonstrationMode) {  // Skip game over checks in demonstration mode
       if (chessBoard.promotion) {
         chessBoard.changeTurn();
         int choice = floor(mouseX / (width / 4));
@@ -267,16 +268,18 @@ void displayBoard() {
     }
   }
 
-  String gameOverMessage = chessBoard.checkForGameOver();
-  if (!gameOverMessage.isEmpty()) {
-    gameOver = true;
-  }
+  if (!demonstrationMode) {  // Skip game over message in demonstration mode
+    String gameOverMessage = chessBoard.checkForGameOver();
+    if (!gameOverMessage.isEmpty()) {
+      gameOver = true;
+    }
 
-  textSize(30);
-  strokeWeight(3);
-  stroke(0);
-  fill(255);
-  text(gameOverMessage, 890, height / 2 + 30);
+    textSize(30);
+    strokeWeight(3);
+    stroke(0);
+    fill(255);
+    text(gameOverMessage, 890, height / 2 + 30);
+  }
 
   if (chessBoard.turn == chessBoard.White) {
     text("White to move", 900, 700);
@@ -397,5 +400,25 @@ void undoMove() {
 void keyPressed() {
   if (key == 'u' || key == 'U') {
     undoMove();
+  } else if (key == 'Q' || key == 'q') {
+    createSinglePieceBoard(chessBoard.White | chessBoard.Queen, chessBoard.Black | chessBoard.Queen);
+  } else if (key == 'N' || key == 'n') {
+    createSinglePieceBoard(chessBoard.White | chessBoard.Knight, chessBoard.Black | chessBoard.Knight);
+  } else if (key == 'R' || key == 'r') {
+    createSinglePieceBoard(chessBoard.White | chessBoard.Rook, chessBoard.Black | chessBoard.Rook);
+  } else if (key == 'B' || key == 'b') {
+    createSinglePieceBoard(chessBoard.White | chessBoard.Bishop, chessBoard.Black | chessBoard.Bishop);
+  } else if (key == 'K' || key == 'k') {
+    createSinglePieceBoard(chessBoard.White | chessBoard.King, chessBoard.Black | chessBoard.King);
   }
+}
+
+void createSinglePieceBoard(int whitePiece, int blackPiece) {
+  chessBoard.board = new int[8][8];
+  chessBoard.board[3][3] = whitePiece;
+  chessBoard.board[4][4] = blackPiece;
+  demonstrationMode = true;  // Enable demonstration mode
+  gameOver = false;  // Ensure the game is not over
+  chessBoard.turn = whitePiece & 24;  // Set turn to the color of the piece
+  displayBoard();
 }
