@@ -91,14 +91,7 @@ class Board {
   }
 
   boolean isCheck(int kingColour, int[][] board) {
-    HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(otherColour(kingColour), board);
-    coordinate kingLocation = locateKing(kingColour, board);
-    for (coordinate c : pseudoLegalMoves.values()) {
-      if (c.i == kingLocation.i && c.j == kingLocation.j) {
-        return true;
-      }
-    }
-    return false;
+    return checkKingSafety(kingColour, board);
   }
 
   boolean isCheck(int kingColour) {
@@ -266,5 +259,16 @@ class Board {
       promotionPosition = new coordinate(i2, j2);
     }
     return temp;
+  }
+
+  boolean checkKingSafety(int kingColour, int[][] board) {
+    HashMap<coordinate, coordinate> pseudoLegalMoves = generatePseudoLegalMoves(otherColour(kingColour), board);
+    coordinate kingLocation = locateKing(kingColour, board);
+    for (coordinate c : pseudoLegalMoves.values()) {
+      if (c.i == kingLocation.i && c.j == kingLocation.j) {
+        return true;
+      }
+    }
+    return false;
   }
 }
