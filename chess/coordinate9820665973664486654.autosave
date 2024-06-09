@@ -1,8 +1,0 @@
-public class coordinate{
-  int i;
-  int j;
-  public coordinate(int i_, int j_){
-    this.i = i_;
-    this.j = j_;
-  }
-}
