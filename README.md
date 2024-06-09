@@ -8,3 +8,6 @@ PureJZ
 ## Group Info
 ## Overview
 ## Instructions
+
+## Video Link
+https://drive.google.com/file/d/1LV8RKtGJvjhubMZaWgyIhP2J7TEvIMlC/view?usp=sharing
