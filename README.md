@@ -11,3 +11,6 @@ PureJZ
 
 ## Video Link
 https://drive.google.com/file/d/1LV8RKtGJvjhubMZaWgyIhP2J7TEvIMlC/view?usp=sharing
+
+## Bug
+There is a bug such that if you make a move that allows both side to castle, the game will crash because of too much recursion/stack overflow error
