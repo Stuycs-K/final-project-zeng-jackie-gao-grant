@@ -54,17 +54,25 @@ Worked on pawn move method.
 ### 5/28/24 
 Worked on creating and starting Bishop and King CLasses.
 
-
 ### 5/29/24 
 Worked on King getPossibleMoves
 
 ### 5/30/24
-Worked on creating the board, reworked rook knight and bishop classes.
+Worked on creating the board, and reworked rook knight and bishop classes.
 
 ### 5/31/24
 Worked on Board move methods
 
 ### 6/2/24
-Imported all of the images, debugged move and coordinate classes and finished Board move methods.
+Imported all of the images, debugged move and coordinate classes, and finished Board move methods.
+
+## 6/7/24
+Worked on updating prototype document
+
+## 6/8/24
+Worked on the video presentation
+
+## 6/9/24
+Updated ReadMe with project description
 
 
