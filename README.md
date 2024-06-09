@@ -8,7 +8,7 @@ PureJZ
 ## Group Info
 ## Overview
 ## Instructions
-
+First select a time control and then start game. Gameplay is normal chess. To see rook moves click R, to see queen moves click Q, to see bishop moves click B, and to see knight moves click N. However if you want to play the game after clicking one of these keys you have to rerun. To undo a move click U. You can undo to the very beginning. 
 ## Video Link
 https://drive.google.com/file/d/1LV8RKtGJvjhubMZaWgyIhP2J7TEvIMlC/view?usp=sharing
 
