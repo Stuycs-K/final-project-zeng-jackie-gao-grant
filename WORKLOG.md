@@ -38,6 +38,14 @@ Finished chess basic game
 
 Added menu screen for time control and also additional text saying when there is check.
 
+## 6/8/24
+
+Worked on the video presentation
+
+## 6/9/24
+
+Updated UML
+
 ## GROUP MEMBER 2
 
 ### 5/23/24
